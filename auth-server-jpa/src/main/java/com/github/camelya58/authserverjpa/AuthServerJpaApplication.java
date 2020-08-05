@@ -1,0 +1,13 @@
+package com.github.camelya58.authserverjpa;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class AuthServerJpaApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(AuthServerJpaApplication.class, args);
+    }
+
+}
