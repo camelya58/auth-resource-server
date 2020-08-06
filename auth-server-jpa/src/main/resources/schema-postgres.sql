@@ -14,24 +14,24 @@ autoapprove VARCHAR(255) DEFAULT NULL);
 
 DROP TABLE IF EXISTS permission CASCADE;
 CREATE TABLE permission (
-id serial PRIMARY KEY,
+id int PRIMARY KEY,
 name VARCHAR(60) UNIQUE);
 
 DROP TABLE IF EXISTS role CASCADE;
 CREATE TABLE role
-(id serial PRIMARY KEY,
+(id int PRIMARY KEY,
 name VARCHAR(60) UNIQUE);
 
 DROP TABLE IF EXISTS permission_role CASCADE;
 CREATE TABLE permission_role(
-permission_id serial,
+permission_id int,
 FOREIGN KEY(permission_id) REFERENCES permission(id),
-role_id serial,
+role_id int,
 FOREIGN KEY(role_id) REFERENCES role(id));
 
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users (
-id serial PRIMARY KEY,
+id int PRIMARY KEY,
 username VARCHAR(24) UNIQUE NOT NULL,
 password VARCHAR(255) NOT NULL,
 email VARCHAR(255) NOT NULL,
@@ -41,5 +41,5 @@ account_expired boolean NOT NULL,
 credentials_expired boolean NOT NULL);
 
 DROP TABLE IF EXISTS role_users CASCADE;
-CREATE TABLE role_users (role_id serial,FOREIGN KEY(role_id) REFERENCES role(id),
-                         users_id serial, FOREIGN KEY(users_id) REFERENCES users(id));
+CREATE TABLE role_users (role_id int,FOREIGN KEY(role_id) REFERENCES role(id),
+                         users_id int, FOREIGN KEY(users_id) REFERENCES users(id));

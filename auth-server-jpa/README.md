@@ -29,22 +29,25 @@ Copy from (including) -----BEGIN PUBLIC KEY----- to (including) -----END PUBLIC 
 and save it to a file.
 
 ## Step 3
-Add data to application.properties file.
-```properties
-server.port=9020
+Add data to application.yml file.
+```yml
+server:
+  port: 9020
 
-spring.datasource.url=jdbc:postgresql://localhost:5432/oauth
-spring.datasource.username=root
-spring.datasource.password=root
-spring.datasource.driverClassName=org.postgresql.Driver
-spring.datasource.platform=postgres
-spring.jpa.database=POSTGRESQL
-spring.datasource.initialization-mode=always
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/oauth
+    username: root
+    password: root
+    driverClassName: org.postgresql.Driver
+    platform: postgres
+    initialization-mode: never
 # JPA config
-spring.jpa.generate-ddl=true
-spring.jpa.hibernate.ddl-auto=update
+  jpa:
+    database: POSTGRESQL
+    hibernate.ddl-auto: validate
 
-check-user-scopes=true
+check-user-scopes: true
 ```
 
 ## Step 4
@@ -57,7 +60,7 @@ public class BaseIdEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long id;
+    protected int id;
 }
 ``` 
 Create class Permission with a field describing authorities.
@@ -357,5 +360,118 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 }
 ```
+
+## Step 11
+Create the tables using scheme-postgres.sql.
+```sql
+DROP TABLE IF EXISTS oauth_client_details CASCADE;
+CREATE TABLE oauth_client_details(
+client_id VARCHAR(255) NOT NULL PRIMARY KEY,
+client_secret VARCHAR(255) NOT NULL,
+resource_ids VARCHAR(255) DEFAULT NULL,
+scope VARCHAR(255) DEFAULT NULL,
+authorized_grant_types VARCHAR(255) DEFAULT NULL,
+web_server_redirect_uri VARCHAR(255) DEFAULT NULL,
+authorities VARCHAR(255) DEFAULT NULL,
+access_token_validity INT DEFAULT NULL,
+refresh_token_validity INT DEFAULT NULL,
+additional_information VARCHAR(4096) DEFAULT NULL,
+autoapprove VARCHAR(255) DEFAULT NULL);
+
+DROP TABLE IF EXISTS permission CASCADE;
+CREATE TABLE permission (
+id int PRIMARY KEY,
+name VARCHAR(60) UNIQUE);
+
+DROP TABLE IF EXISTS role CASCADE;
+CREATE TABLE role
+(id int PRIMARY KEY,
+name VARCHAR(60) UNIQUE);
+
+DROP TABLE IF EXISTS permission_role CASCADE;
+CREATE TABLE permission_role(
+permission_id int,
+FOREIGN KEY(permission_id) REFERENCES permission(id),
+role_id int,
+FOREIGN KEY(role_id) REFERENCES role(id));
+
+DROP TABLE IF EXISTS users CASCADE;
+CREATE TABLE users (
+id int PRIMARY KEY,
+username VARCHAR(24) UNIQUE NOT NULL,
+password VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL,
+enabled boolean NOT NULL,
+account_locked boolean NOT NULL,
+account_expired boolean NOT NULL,
+credentials_expired boolean NOT NULL);
+
+DROP TABLE IF EXISTS role_users CASCADE;
+CREATE TABLE role_users (role_id int,FOREIGN KEY(role_id) REFERENCES role(id),
+                         users_id int, FOREIGN KEY(users_id) REFERENCES users(id));
+```
+
+Fill the tables using data-postgres.sql.
+```sql
+ INSERT INTO oauth_client_details (
+	client_id,client_secret,
+	resource_ids,
+	scope,
+	authorized_grant_types,
+	web_server_redirect_uri,authorities,
+	access_token_validity,refresh_token_validity,
+	additional_information,autoapprove)
+	VALUES(
+    'USER_CLIENT_APP','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
+	'USER_CLIENT_RESOURCE,USER_ADMIN_RESOURCE',
+	'role_admin,role_user',
+	'authorization_code,password,refresh_token,implicit',
+	NULL,NULL,
+	900,3600,
+	'{}',NULL);
+
+INSERT INTO permission (name) VALUES
+('can_create_user'),
+('can_update_user'),
+('can_read_user'),
+('can_delete_user');
+
+INSERT INTO role (name) VALUES
+('role_admin'),('role_user');
+
+INSERT INTO permission_role (permission_id, role_id) VALUES
+(1,1), /* can_create_user assigned to role_admin */
+(2,1), /* can_update_user assigned to role_admin */
+(3,1), /* can_read_user assigned to role_admin */
+(4,1), /* can_delete_user assigned to role_admin */
+(3,2);  /* can_read_user assigned to role_user */
+
+INSERT INTO users (
+username,password,
+email,enabled,account_locked, account_expired,credentials_expired) VALUES (
+'admin','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
+'william@gmail.com',true,true,true,true),
+('user','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
+'john@gmail.com',true,true,true,true);
+
+
+INSERT INTO role_users (role_id, users_id)
+VALUES
+(1, 1) /* role_admin assigned to admin user */,
+(2, 2) /* role_user assigned to user user */ ;
+```
+
+## Step 12
+Run the project at http://localhost:9020/oauth/token using Postman.
+
+Fill "Authorization":
+- Type - Basic Auth.
+- Username - USER_CLIENT_APP.
+- Password - password.
+
+Fill "Body":
+- grant_type - password.
+- username - admin.
+- password - password.
 
 [Source](https://www.youtube.com/watch?v=wxebTn_a930)

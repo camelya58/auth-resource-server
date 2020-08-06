@@ -1,0 +1,17 @@
+server:
+  port: 9020
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/oauth
+    username: root
+    password: root
+    driverClassName: org.postgresql.Driver
+    platform: postgres
+    initialization-mode: never
+# JPA config
+  jpa:
+    database: POSTGRESQL
+    hibernate.ddl-auto: validate
+
+check-user-scopes: true

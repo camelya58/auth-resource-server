@@ -7,7 +7,7 @@
 	access_token_validity,refresh_token_validity,
 	additional_information,autoapprove)
 	VALUES(
-    'USER_CLIENT_APP','$2y$12$qBt9lqRwW3n5Tg8Gf/clvOY.HqPI7xPnIPrmeARN9b1ZBRDsmPEHG',
+    'USER_CLIENT_APP','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
 	'USER_CLIENT_RESOURCE,USER_ADMIN_RESOURCE',
 	'role_admin,role_user',
 	'authorization_code,password,refresh_token,implicit',
@@ -34,9 +34,9 @@ INSERT INTO permission_role (permission_id, role_id) VALUES
 INSERT INTO users (
 username,password,
 email,enabled,account_locked, account_expired,credentials_expired) VALUES (
-'admin','$2y$12$yEmKyV150Q7GUtDztuzKZuHFVlY2s8mzD7HxgDVDZPji9/udjPF.G',
+'admin','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
 'william@gmail.com',true,true,true,true),
-('user','$2y$12$Qbzvmngmj7rm7LaEUjTo5OA8dHTufdPwiO4umAqFxe/JUURKQndRK',
+('user','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
 'john@gmail.com',true,true,true,true);
 
 

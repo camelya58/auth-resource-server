@@ -72,14 +72,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         converter.setKeyPair(
                 new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"),
                         "password".toCharArray()).getKeyPair("jwt"));
-       // converter.setSigningKey("$2y$12$PL1op/ryiqLqCN9sgqYYQOnN.AUMSRM26nszXYA/BOqp4Hd/dQ/iK");
         return converter;
 
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
+           clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
     }
 
     @Bean
@@ -88,12 +87,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer security) {
         security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.tokenStore(tokenStore()).tokenEnhancer(jwtAccessTokenConverter())
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService);
