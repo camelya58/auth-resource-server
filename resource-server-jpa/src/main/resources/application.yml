@@ -1,0 +1,17 @@
+server:
+  port: 9021
+
+security:
+  oauth2:
+     resource:
+        jwt:
+          key-value: |
+            -----BEGIN PUBLIC KEY-----
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmhnTX0sT3697ZfRWshVI
+            wbVJQP/CUZ+W47JC0DEreyXlNJlpbbKWNuJ5VmcTZz2S3H3PTGHEKuwmxSjqxJ96
+            6ZtFgQ8UGoRrfjO6Vr9eEqVtD3Tbu2m5gFEHB3cH3bFeHfBgSN2YVBzSOpynALIt
+            uPMY2sgG6OrzoZufgdbNissVGSTQjwcLxEOBPVvCuzW9N6Mf50qREIKW6hxCHW5j
+            UunuVmY8L7uzU7H1hFIa6I2c7JjQwjWsl9xGvSlfvgVmRIfnrzsQoKANrksrj4NC
+            ZfgCnBAbddj0nsxd/rpDvgBX59ea3qZxoV6I5a/3ZfkCm/KRkvc8qDPCJkAX6hyJ
+            NwIDAQAB
+            -----END PUBLIC KEY-----
