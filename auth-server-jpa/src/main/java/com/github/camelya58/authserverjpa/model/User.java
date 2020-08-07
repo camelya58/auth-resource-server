@@ -44,11 +44,9 @@ public class User extends BaseIdEntity implements UserDetails {
 
         roles.forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
-            role.getPermissions().forEach(permission -> {
-                authorities.add(new SimpleGrantedAuthority(permission.getName()));
-            });
+            role.getPermissions().forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission.getName())));
         });
-        return null;
+        return authorities;
     }
 
     @Override

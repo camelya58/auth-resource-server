@@ -1,6 +1,5 @@
 package com.github.camelya58.authserverjpa.config;
 
-import com.github.camelya58.authserverjpa.util.CustomTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

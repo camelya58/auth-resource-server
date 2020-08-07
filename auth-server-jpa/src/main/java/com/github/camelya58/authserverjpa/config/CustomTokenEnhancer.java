@@ -1,4 +1,4 @@
-package com.github.camelya58.authserverjpa.util;
+package com.github.camelya58.authserverjpa.config;
 
 import com.github.camelya58.authserverjpa.model.User;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;

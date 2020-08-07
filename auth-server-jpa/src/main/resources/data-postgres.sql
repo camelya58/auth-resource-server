@@ -35,9 +35,9 @@ INSERT INTO users (
 username,password,
 email,enabled,account_locked, account_expired,credentials_expired) VALUES (
 'admin','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
-'william@gmail.com',true,true,true,true),
+'william@gmail.com',true,true, true, true),
 ('user','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
-'john@gmail.com',true,true,true,true);
+'john@gmail.com',true,true, true, true);
 
 
 INSERT INTO role_users (role_id, users_id)
